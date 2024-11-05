@@ -23,85 +23,85 @@ Este projeto implementa um sistema de recomendação de filmes e séries utiliza
    python -m venv venv
    source venv/bin/activate  # No Windows, use venv\Scripts\activate
 
-3. Instale as dependências:
+3. **Instale as dependências:**
 
-pip install -r requirements.txt
+   ```bash
+   pip install -r requirements.txt
 
 
-4. Configuração da API TMDB
+4. **Configuração da API TMDB**
 
-    Obtenha uma chave de API:
-        Crie uma conta em TMDB.
-        Navegue até as configurações da conta e obtenha uma chave de API.
+   - **Obtenha uma chave de API:**
+     - Crie uma conta em TMDB.
+     - Navegue até as configurações da conta e obtenha uma chave de API.
 
-    Configure a chave de API no projeto:
+   - **Configure a chave de API no projeto:**
+     - No arquivo `servidor.py`, localize a linha:
+       ```python
+       TMDB_API_KEY = '88a14d3ae04de73aab3f3e8f1695c3b3'
+       ```
+     - Substitua o valor pela sua chave de API obtida no passo anterior.
+     - **Importante:** Não compartilhe sua chave de API publicamente.
 
-        No arquivo servidor.py, localize a linha:
-        TMDB_API_KEY = '88a14d3ae04de73aab3f3e8f1695c3b3'
-        Substitua o valor pela sua chave de API obtida no passo anterior.
+## Executando o Servidor
 
-        Importante: Não compartilhe sua chave de API publicamente.
+- **Inicie o servidor gRPC:**
 
-Executando o Servidor
+   ```bash
+   python servidor.py
 
-    Inicie o servidor gRPC:
+   O servidor estará escutando na porta 50051. Certifique-se de que essa porta está disponível e não está bloqueada por firewall.
 
-    python servidor.py
+## Executando o Cliente
 
-O servidor estará escutando na porta 50051.
-Certifique-se de que essa porta está disponível e não está bloqueada por firewall.
+- **Configure o endereço do servidor (se necessário):**
+  - No arquivo `cliente.py`, verifique a linha:
+    ```python
+    with grpc.insecure_channel('192.168.207.102:50051') as channel:
+    ```
+  - Substitua `'192.168.207.102'` pelo endereço IP onde o servidor está sendo executado. Se estiver executando localmente, use `'localhost'` ou `'127.0.0.1'`.
 
-Executando o Cliente
+- **Execute o cliente:**
 
-    Configure o endereço do servidor (se necessário):
+   ```bash
+   python cliente.py
+   O cliente solicitará informações para a recomendação:
+   - Tipo: `'filme'` ou `'série'`
+   - Gênero: ex. `'Ação'`, `'Comédia'`, `'Drama'`
+   - Ano de lançamento: ex. `2022`
+   - Nota mínima: de `0.0` a `10.0`
 
-        No arquivo cliente.py, verifique a linha:
-            with grpc.insecure_channel('192.168.207.102:50051') as channel:
-    Substitua '192.168.207.102' pelo endereço IP onde o servidor está sendo executado. Se estiver executando localmente, use 'localhost' ou '127.0.0.1'.
+   Após inserir os dados, o cliente exibirá uma lista de até 5 recomendações com base nos critérios fornecidos.
 
-    Execute o cliente:
-    python cliente.py
-        O cliente solicitará informações para a recomendação:
-            Tipo: 'filme' ou 'série'
-            Gênero: ex. 'Ação', 'Comédia', 'Drama'
-            Ano de lançamento: ex. 2022
-            Nota mínima: de 0.0 a 10.0
+## Funcionamento
 
-        Após inserir os dados, o cliente exibirá uma lista de até 5 recomendações com base nos critérios fornecidos.
+- **Servidor (`servidor.py`):**
+  - Implementa um serviço gRPC que recebe solicitações de recomendação.
+  - Consulta a API TMDB para obter filmes ou séries que correspondam aos critérios.
+  - Retorna uma lista de títulos recomendados.
 
-Funcionamento
+- **Cliente (`cliente.py`):**
+  - Solicita ao usuário os critérios para a recomendação.
+  - Envia uma requisição ao servidor gRPC com os dados fornecidos.
+  - Recebe e exibe as recomendações ao usuário.
 
-    Servidor (servidor.py):
-        Implementa um serviço gRPC que recebe solicitações de recomendação.
-        Consulta a API TMDB para obter filmes ou séries que correspondam aos critérios.
-        Retorna uma lista de títulos recomendados.
+## Possíveis Erros e Soluções
 
-    Cliente (cliente.py):
-        Solicita ao usuário os critérios para a recomendação.
-        Envia uma requisição ao servidor gRPC com os dados fornecidos.
-        Recebe e exibe as recomendações ao usuário.
+- **Erro:** "A chave da API TMDB não foi definida no ambiente."
+  - Verifique se a chave da API TMDB foi configurada corretamente no `servidor.py`.
 
-Possíveis Erros e Soluções
+- **Erro de conexão:**
+  - Certifique-se de que o servidor está em execução e o endereço IP e porta no `cliente.py` estão corretos.
+  - Verifique se não há firewall bloqueando a porta 50051.
 
-    Erro: "A chave da API TMDB não foi definida no ambiente."
-        Verifique se a chave da API TMDB foi configurada corretamente no servidor.py.
+- **Nenhuma recomendação encontrada:**
+  - Pode ocorrer se não houver filmes ou séries que correspondam exatamente aos critérios especificados.
+  - Tente ajustar os critérios (por exemplo, usar um ano diferente ou uma nota mínima menor).
 
-    Erro de conexão:
-        Certifique-se de que o servidor está em execução e o endereço IP e porta no cliente.py estão corretos.
-        Verifique se não há firewall bloqueando a porta 50051.
-
-    Nenhuma recomendação encontrada:
-        Pode ocorrer se não houver filmes ou séries que correspondam exatamente aos critérios especificados.
-        Tente ajustar os critérios (por exemplo, usar um ano diferente ou uma nota mínima menor).
-
-    Gênero não encontrado:
-        Verifique se o gênero digitado é válido e corresponde aos gêneros disponíveis na TMDB.
-        Alguns gêneros comuns:
-            Ação
-            Comédia
-            Drama
-            Ficção científica
-            Terror
-
-    Problemas com acentuação:
-        O cliente remove automaticamente acentos, mas certifique-se de digitar os gêneros corretamente.
+- **Gênero não encontrado:**
+  - Verifique se o gênero digitado é válido e corresponde aos gêneros disponíveis na TMDB.
+  - Alguns gêneros comuns:
+    - Ação
+    - Comédia
+    - Drama
+    - Ficção científica

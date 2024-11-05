@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+service Recomendador {
+  rpc Recomendar (Requisicao) returns (Resposta);
+}
+
+message Requisicao {
+  string tipo = 1;    // "filme" ou "serie"
+  string genero = 2;
+  int32 ano = 3;      // Ano de lançamento
+  float nota = 4;     // Nota mínima (de 0.0 a 10.0)
+}
+
+message Resposta {
+  repeated string recomendacoes = 1;
+  string erro = 2;
+}
+

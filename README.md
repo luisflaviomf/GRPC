@@ -17,10 +17,11 @@ Este projeto implementa um sistema de recomendação de filmes e séries utiliza
    git clone https://github.com/seu-usuario/seu-repositorio.git
    cd seu-repositorio
 
-2. Crie um ambiente virtual (opcional, mas recomendado):
+2. **Crie um ambiente virtual** (opcional, mas recomendado):
 
-python -m venv venv
-source venv/bin/activate  # No Windows, use venv\Scripts\activate
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # No Windows, use venv\Scripts\activate
 
 3. Instale as dependências:
 

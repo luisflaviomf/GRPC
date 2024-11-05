@@ -2,16 +2,6 @@
 
 Este projeto implementa um sistema de recomendação de filmes e séries utilizando gRPC para comunicação entre cliente e servidor. O servidor consulta a API do The Movie Database (TMDB) para fornecer recomendações com base nos critérios especificados pelo usuário.
 
-## Sumário
-
-- [Pré-requisitos](#pré-requisitos)
-- [Instalação](#instalação)
-- [Configuração da API TMDB](#configuração-da-api-tmdb)
-- [Executando o Servidor](#executando-o-servidor)
-- [Executando o Cliente](#executando-o-cliente)
-- [Funcionamento](#funcionamento)
-- [Possíveis Erros e Soluções](#possíveis-erros-e-soluções)
-
 ## Pré-requisitos
 
 - **Python 3.7** ou superior
